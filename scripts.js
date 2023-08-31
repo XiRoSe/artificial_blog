@@ -1,8 +1,15 @@
 let isLoggedIn = false;
+let formerHTML = document.querySelector("main").innerHTML;
+// Your OpenAI API key
+const apiKey = "ENTER-YOUR-OPENAI-KEY-HERE";
+// Placeholder content for the AI-completed part
+let aiCompletedContent = "";
+
 let posts = [
     { title: "The Rise of AI in Today's World", content: "The rapid developments in AI technology have greatly impacted various sectors. From healthcare to entertainment, the presence of AI is undeniable..." },
     { title: "Understanding Neural Networks", content: "Neural networks form the backbone of most modern AI systems. They're inspired by the human brain and have an uncanny ability to..." }
 ];
+
 
 function displayPosts() {
     const postSection = document.getElementById("most-watched-posts");
@@ -211,8 +218,8 @@ function displayShortenedPosts() {
 // Expand post content to show full text
 function expandPost(index) {
     const postSection = document.getElementById("most-watched-posts");
-    const contentLines = posts[index].content.split('\n');
-    const fullContent = contentLines.join('<br>');
+    const contentLines = posts[index].content.split(' ');
+    const fullContent = contentLines.join(' ');
 
     // Create a new article element with the expanded content
     const expandedArticle = document.createElement('article');
@@ -229,22 +236,15 @@ function expandPost(index) {
     postSection.replaceChild(expandedArticle, postSection.children[articleIndex]);
 }
 
-// Display shortened posts initially
-displayShortenedPosts();
-
-// Your OpenAI API key
-const apiKey = "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";
-
-// Placeholder content for the AI-completed part
-let aiCompletedContent = "";
-
 async function useAI() {
+   document.getElementById("loading").style.display = "block";
     const partialContent = document.getElementById("title").value;
 
     try {
         // Make a request to the OpenAI API to generate AI content
-        const response = await generateAIContent(partialContent);
-				console.log(response)
+        const contentPrompt = "please write me a post for the title: " + partialContent;
+        const response = await generateAIContent(contentPrompt);
+				/* console.log(response) */
         // Extract the AI-generated content from the response
         aiCompletedContent = response.choices[0].message.content
 
@@ -252,7 +252,64 @@ async function useAI() {
         document.getElementById("content").value = aiCompletedContent;
     } catch (error) {
         console.error("Error generating AI content:", error);
+    } finally {
+        document.getElementById("loading").style.display = "none";
     }
+}
+
+async function generateBlogSection() {
+    try {
+        document.getElementById("loading").style.display = "block";
+
+        const prompt = "Design a noval and unique new HTML section that fits within a modern blog format, return only code.";
+
+        const result = await generateAIContent(prompt);
+        const aiMessage = result.choices[0].message.content
+        console.log(aiMessage);
+        if (aiMessage) {
+            // Insert the AI's suggestion as a new section to the main content.
+            const mainContent = document.querySelector("main");
+            mainContent.insertAdjacentHTML("beforeend", aiMessage);
+        } else {
+            alert("Failed to generate content from AI. Please try again.");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred. Please try again.");
+    } finally {
+        document.getElementById("loading").style.display = "none";
+    }
+}
+
+async function upgradeBlogUsingAI() {
+    try {
+      const mainContent = document.querySelector("main");
+    		formerHTML = mainContent.innerHTML;
+    
+    		currentCode = document.querySelector("main").innerHTML;
+        document.getElementById("loading").style.display = "block";
+
+        let prompt = `Given the current blog HTML code: "${currentCode}", please return an upgraded version of it that enhances its visual appeal, functionality, and user experience in one page, the changes should be small but meaningful, you can add unique features as well for this blog, be careful not to break any existing functionality, return only the code itself fully without any explanations.`;
+
+        let result = await generateAIContent(prompt);
+        let aiMessage = result.choices[0].message.content;
+
+        if (aiMessage) {
+            mainContent.innerHTML = aiMessage
+        } else {
+            alert("Failed to generate upgraded content from AI. Please try again.");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred. Please try again.");
+    } finally {
+        document.getElementById("loading").style.display = "none";
+    }
+}
+
+function returnToFormerHTML() {
+  const mainContent = document.querySelector("main");
+  mainContent.innerHTML = formerHTML
 }
 
 // Send a request to the OpenAI API to generate content
@@ -266,10 +323,13 @@ async function generateAIContent(partialContent) {
             "Authorization": `Bearer ${apiKey}`
         },
         body: JSON.stringify({
-            model: "gpt-3.5-turbo",
-     				messages: [{"role": "user", "content": "please write me a post for the title: " + partialContent}],
+            model: "gpt-4-0613",
+     				messages: [{"role": "user", "content": partialContent}],
         })
     });
 
     return response.json();
 }
+
+// Display shortened posts initially
+displayShortenedPosts();
