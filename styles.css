@@ -1,0 +1,75 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+header a {
+    color: #fff;
+    text-decoration: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+nav button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 5px;
+    margin: 0 10px;
+}
+
+nav button.active, nav button:hover {
+    background-color: #2196F3;
+}
+
+main, #management {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: none; /* Hide both by default */
+}
+
+h2, h3 {
+    border-bottom: 2px solid #2196F3; /* Changed color to a more prominent one */
+    padding-bottom: 10px;
+    color: #333; /* Added text color */
+}
+
+.ai-theme {
+    color: #2196F3;
+    font-style: italic;
+}
+
+/* New style for the login form */
+#login-form {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
