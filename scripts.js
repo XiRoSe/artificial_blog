@@ -29,12 +29,14 @@ function addPost() {
 
     if (title && content) {
         posts.push({ title, content });
-        displayPosts();
 
         // Clear the input fields after adding
         document.getElementById("title").value = "";
         document.getElementById("content").value = "";
 
+				// Refreshing blog tab
+        displayShortenedPosts();
+        
         // Update the "Edit Post" select options
         populateEditSelectOptions();
     }
@@ -46,7 +48,7 @@ function removePost(index) {
     }
 
     posts.splice(index, 1);
-    displayPosts();
+    displayShortenedPosts();
     populateEditSelectOptions();
 }
 
@@ -75,7 +77,7 @@ function updatePost() {
     if (editIndex !== "-1" && editTitle && editContent) {
         posts[editIndex].title = editTitle;
         posts[editIndex].content = editContent;
-        displayPosts();
+        displayShortenedPosts();
         loadPostData("-1"); // Clear the edit fields
     }
 }
@@ -89,7 +91,7 @@ function deletePost() {
 
     if (editIndex !== "-1") {
         posts.splice(editIndex, 1);
-        displayPosts();
+        displayShortenedPosts();
         populateEditSelectOptions();
         clearEditFields();
     }
@@ -170,5 +172,92 @@ function switchTab(tab) {
     }
 }
 
-// Display posts initially
-displayPosts();
+// Display shortened posts initially
+function displayShortenedPosts() {
+    const postSection = document.getElementById("most-watched-posts");
+    postSection.innerHTML = '<h2>Most Watched Posts</h2>'; // Reset and keep the title
+
+    posts.forEach((post, index) => {
+        // Split the content into lines
+        const contentLines = post.content.split(' ');
+        // Take the first 20 lines of content
+        const shortenedContent = contentLines.slice(0, 20).join(' ');
+        
+        const hasMoreContent = contentLines.length > 20;
+        
+        postSection.innerHTML += `
+            <article>
+                <h3 class="ai-theme">${post.title}</h3>
+                <p>${shortenedContent}</p>
+                ${hasMoreContent ? `<p onclick="expandPost(${index})" style="color: blue; cursor: pointer">Read more...</p>` : ''}
+                ${isLoggedIn ? `<a href="#" onclick="removePost(${index})">Remove</a>` : ''}
+            </article>
+        `;
+    });
+}
+
+// Expand post content to show full text
+function expandPost(index) {
+    const postSection = document.getElementById("most-watched-posts");
+    const contentLines = posts[index].content.split('\n');
+    const fullContent = contentLines.join('<br>');
+
+    // Create a new article element with the expanded content
+    const expandedArticle = document.createElement('article');
+    expandedArticle.innerHTML = `
+        <h3 class="ai-theme">${posts[index].title}</h3>
+        <p>${fullContent}</p>
+        ${isLoggedIn ? `<a href="#" onclick="removePost(${index})">Remove</a>` : ''}
+    `;
+
+    // Find the index of the clicked article within the postSection
+    const articleIndex = Array.from(postSection.children).indexOf(event.currentTarget.parentNode);
+
+    // Replace the content of the clicked article with the expanded content
+    postSection.replaceChild(expandedArticle, postSection.children[articleIndex]);
+}
+
+// Display shortened posts initially
+displayShortenedPosts();
+
+// Your OpenAI API key
+const apiKey = "ENTER-HERE-YOUR-OPENAI-APIKEY";
+
+// Placeholder content for the AI-completed part
+let aiCompletedContent = "";
+
+async function useAI() {
+    const partialContent = document.getElementById("title").value;
+
+    try {
+        // Make a request to the OpenAI API to generate AI content
+        const response = await generateAIContent(partialContent);
+				console.log(response)
+        // Extract the AI-generated content from the response
+        aiCompletedContent = response.choices[0].message.content
+
+        // Display the AI-completed content in the textarea
+        document.getElementById("content").value = aiCompletedContent;
+    } catch (error) {
+        console.error("Error generating AI content:", error);
+    }
+}
+
+// Send a request to the OpenAI API to generate content
+async function generateAIContent(partialContent) {
+    const endpoint = "https://api.openai.com/v1/chat/completions";
+    
+    const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+            model: "gpt-3.5-turbo",
+     				messages: [{"role": "user", "content": "please write me a post for the title: " + partialContent}],
+        })
+    });
+
+    return response.json();
+}
