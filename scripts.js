@@ -151,10 +151,22 @@ function login() {
 }
 
 function showManagementView() {
-    document.getElementById("login-form").style.display = "none";
-    document.getElementById("blog").style.display = "none";
-    document.getElementById("management").style.display = "block";
-    document.getElementById("management-button").style.display = "block";
+    const elementsToHide = ["login-form", "blog"];
+    const elementsToShow = ["management", "management-button"];
+    const activeButtonIndex = 1; // Index of the active button (0-based)
+
+    elementsToHide.forEach(elementId => {
+        document.getElementById(elementId).style.display = "none";
+    });
+
+    elementsToShow.forEach(elementId => {
+        document.getElementById(elementId).style.display = "block";
+    });
+
+    document.querySelectorAll('nav button').forEach((btn, index) => {
+        btn.classList.toggle('active', index === activeButtonIndex);
+    });
+
     populateEditSelectOptions(); // Populate the "Edit Post" options
 }
 
@@ -221,7 +233,7 @@ function expandPost(index) {
 displayShortenedPosts();
 
 // Your OpenAI API key
-const apiKey = "ENTER-HERE-YOUR-OPENAI-APIKEY";
+const apiKey = "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";
 
 // Placeholder content for the AI-completed part
 let aiCompletedContent = "";
