@@ -1,24 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Personal Blog</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
+
 <body>
+   <!-- Loading Indicator -->
+    <div id="loading" style="display: none;" class="spinner">
+        <!-- <p>Loading...</p> -->
+    </div>
+
     <!-- Login Page -->
-    <div id="login-form" style="display: none;">
+    <div id="login-form" class="form-container" style="display: none">
         <h2>Login</h2>
         <div>
             <label for="username">Username:</label>
-            <input type="text" id="username" required>
+            <input type="text" id="username" class="input-field" required>
         </div>
         <div>
             <label for="password">Password:</label>
-            <input type="password" id="password" required>
+            <input type="password" id="password" class="input-field" required>
         </div>
-        <button onclick="login()">Login</button>
+        <div class="button-container">
+            <button class="login-button" onclick="login()">Login</button>
+        </div>
     </div>
 
     <!-- Blog Content -->
@@ -27,10 +36,10 @@
         <a href="#" onclick="toggleAdminView()">&#9881;</a>
     </header>
     <nav>
-        <button onclick="switchTab('blog')" class="active">Blog</button>
-        <button onclick="switchTab('management')" id="management-button" style="display:none;">Management</button>
+        <button class="active" onclick="switchTab('blog')">Blog</button>
+        <button id="management-button" onclick="switchTab('management')" style="display:none;">Management</button>
     </nav>
-    <main id="blog" style="display: block;">
+    <main id="blog" style="display: block">
         <section id="introduction">
             <h2>Welcome to My Blog</h2>
             <p>Welcome to my personal blog. Here, I share my thoughts, experiences, and insights on various topics, with a special focus on artificial intelligence, the digital realm, and the intertwining of technology with everyday life. I'm inspired by the rapid advancements in AI and hope to provide a unique perspective on this fascinating domain. Enjoy reading!</p>
@@ -40,37 +49,43 @@
             <!-- Posts will be appended here using JavaScript -->
         </section>
     </main>
-    <section id="management">
+    <section id="management" style="display: none">
         <h2>Manage Posts</h2>
-        <div>
+        <div class="form-container">
             <label for="edit-index">Edit Post:</label>
             <select id="edit-index" onchange="loadPostData(this.value)">
                 <option value="-1">Select a post to edit</option>
                 <!-- Options will be appended here using JavaScript -->
             </select>
-        </div>
-        <div>
             <label for="edit-title">Title:</label>
             <input type="text" id="edit-title">
-        </div>
-        <div>
             <label for="edit-content">Content:</label>
             <textarea id="edit-content" rows="5"></textarea>
+            <div class="button-container">
+                <button onclick="updatePost()">Update Post</button>
+                <button onclick="deletePost()">Delete Post</button>
+            </div>
         </div>
-        <button onclick="updatePost()">Update Post</button>
-        <button onclick="deletePost()">Delete Post</button>
-        <!-- New post addition section -->
-        <h2>Add New Post</h2>
-        <div>
+        <div class="form-container">
+            <h2>Add New Post</h2>
             <label for="title">Title:</label>
             <input type="text" id="title">
-        </div>
-        <div>
             <label for="content">Content:</label>
             <textarea id="content" rows="5"></textarea>
+            <div class="button-container">
+                <button onclick="addPost()">Add Post</button>
+                <button id="use-ai-button" onclick="useAI()">Use AI to Complete</button>
+            </div>
         </div>
-        <button onclick="addPost()">Add Post</button>
+        <div class="form-container">
+            <h2>Blog AI Capabilities</h2>
+            <div class="button-container">
+            <button onclick="upgradeBlogUsingAI()">Upgrade Blog Using AI</button>
+            <button onclick="returnToFormerHTML()">Return to Previous Blog Version</button>
+            </div>
+        </div>
     </section>
     <script src="scripts.js"></script>
 </body>
+
 </html>
