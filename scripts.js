@@ -288,8 +288,8 @@ async function upgradeBlogUsingAI() {
     
     		currentCode = document.querySelector("main").innerHTML;
         document.getElementById("loading").style.display = "block";
-
-        let prompt = `Given the current blog HTML code: "${currentCode}", please return an upgraded version of it that enhances its visual appeal, functionality, and user experience in one page, the changes should be small but meaningful, you can add unique features as well for this blog, be careful not to break any existing functionality, return only the code itself fully without any explanations.`;
+				console.log(currentCode)
+        let prompt = `Given the current blog code: "${currentCode}", please return an upgraded version of it that enhances its visual appeal, functionality, and user experience, the changes should be small but meaningful, make it look unique, be careful not to break any existing functionality, return only the code itself fully in one page without any explanations.`;
 
         let result = await generateAIContent(prompt);
         let aiMessage = result.choices[0].message.content;
@@ -324,7 +324,7 @@ async function generateAIContent(partialContent) {
         },
         body: JSON.stringify({
             model: "gpt-4-0613",
-     				messages: [{"role": "user", "content": partialContent}],
+	    messages: [{"role": "user", "content": partialContent}],
         })
     });
 
