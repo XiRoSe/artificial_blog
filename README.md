@@ -2,7 +2,7 @@
 
 This repository contains a unique web platform for blogging, enhanced with AI capabilities for content recommendation and generation.
 
-https://gifyu.com/image/S4zGS
+https://s11.gifyu.com/images/S4zGS.gif
 
 ---
 
