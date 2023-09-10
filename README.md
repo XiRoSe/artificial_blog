@@ -2,9 +2,7 @@
 
 This repository contains a unique web platform for blogging, enhanced with AI capabilities for content recommendation and generation.
 
-![Demo Image](https://gifyu.com/image/S4zGS)
-
-> **Note:** For demo purposes, replace `path_to_demo_image/demo.png` with the actual path to your project's demo/screenshot image.
+https://gifyu.com/image/S4zGS
 
 ---
 
