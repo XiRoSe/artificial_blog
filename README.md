@@ -2,7 +2,7 @@
 
 This repository contains a unique web platform for blogging, enhanced with AI capabilities for content recommendation and generation.
 
-![Demo Image](path_to_demo_image/demo.png)
+![Demo Image](https://gifyu.com/image/S4zGS)
 
 > **Note:** For demo purposes, replace `path_to_demo_image/demo.png` with the actual path to your project's demo/screenshot image.
 
@@ -70,8 +70,8 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 💌 Contact
 
-- **Your Name** - your_email@example.com
-- **Project Link:** [https://github.com/your_username/ai-enhanced-blog](https://github.com/XiRoSe/artificial_blog)
+- **Your Name** - XiRoSe - Matan Avitan
+- **Project Link:** [https://github.com/XiRoSe/artificial_blog](https://github.com/XiRoSe/artificial_blog)
 
 ---
 
